@@ -1,0 +1,179 @@
+﻿<Window x:Class="FractalPainter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FractalPainter"
+        mc:Ignorable="d"
+        Title="Фракталы" Height="450" Width="800" SizeChanged="Window_SizeChanged">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="117*"/>
+            <ColumnDefinition Width="43*"/>
+        </Grid.ColumnDefinitions>
+        <Border Margin="5" BorderBrush="Black" BorderThickness="1">
+        <Canvas Name="drawSurface" MouseLeftButtonDown="drawSurface_MouseLeftButtonDown" MouseLeftButtonUp="drawSurface_MouseLeftButtonUp" MouseMove="drawSurface_MouseMove">
+            <Canvas.ClipToBounds>
+                True
+            </Canvas.ClipToBounds>
+                <Canvas.Background>
+                    Transparent
+                </Canvas.Background>
+        </Canvas>
+        </Border>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <ComboBox Name="fractalsComboBox" Margin="5" SelectionChanged="fractalsComboBox_SelectionChanged">
+                    <TextBlock Name="treeFractal">Обдуваемое ветром фрактальное дерево</TextBlock>
+                    <TextBlock Name="curveFractal">Кривая Коха</TextBlock>
+                    <TextBlock Name="carpetFractal">Ковер Серпинского</TextBlock>
+                    <TextBlock Name="triangleFractal">Треугольник Серпинского</TextBlock>
+                    <TextBlock Name="cantorSetFractal">Множество Кантора</TextBlock>
+                </ComboBox>
+            </Grid>
+            <Grid Row="6">
+                <Button Name="saveImageButton" Margin="5,15, 10, 5" MaxHeight="100px" Click="saveImageButton_Click">Сохранить изображение</Button>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <GroupBox Margin="5, 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="Увеличение масштаба" Margin="0, 2, 0, 2" />
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="zoomIn2" Margin="9, 0" Click="zoomIn2_Click">
+                            <TextBlock>x2</TextBlock>
+                        </Button>
+                        <Button Grid.Column="1" Name="zoomIn3" Margin="9, 0" Click="zoomIn3_Click">
+                            <TextBlock>x3</TextBlock>
+                        </Button>
+                        <Button Grid.Column="2" Name="zoomIn5" Margin="9, 0" Click="zoomIn5_Click">
+                            <TextBlock>x5</TextBlock>
+                        </Button>
+                        <Button Grid.Column="3" Name="resetZoomIn" Margin="3, 0" Click="resetZoomIn_Click">
+                            <TextBlock>Сброс</TextBlock>
+                        </Button>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Margin="5, 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="Уменьшение масштаба" Margin="0, 2, 0, 2" />
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="zoomOut2" Margin="9, 0" Click="zoomOut2_Click">
+                            <TextBlock>x2</TextBlock>
+                        </Button>
+                        <Button Grid.Column="1" Name="zoomOut3" Margin="9, 0" Click="zoomOut3_Click">
+                            <TextBlock>x3</TextBlock>
+                        </Button>
+                        <Button Grid.Column="2" Name="zoomOut5" Margin="9, 0" Click="zoomOut5_Click">
+                            <TextBlock>x5</TextBlock>
+                        </Button>
+                        <Button Grid.Column="3" Name="resetZoomOut" Margin="3, 0" Click="resetZoomOut_Click">
+                            <TextBlock>Сброс</TextBlock>
+                        </Button>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Name="iterationsSlider" Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center">
+                    Количество итераций
+                </Label>
+                <Slider Name="iterations" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0" TickFrequency="1" IsSnapToTickEnabled="True"/>
+                <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5, 0, 10, 0" Content="{Binding Value, ElementName=iterations}"/>
+            </Grid>
+            <Grid Name="cantorSetDelta" Row="3" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    Расстояние между отрезками (px)
+                </Label>
+                <Slider Name="delta" IsSnapToTickEnabled="True" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0" ValueChanged="RedrawCurrentFractal" Minimum="20" Maximum="100"></Slider>
+                <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5, 0, 10, 0" Content="{Binding Value, ElementName=delta}"/>
+            </Grid>
+            <Grid Row="3" Name="firstSegmentAngle" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    Угол наклона первого отрезка (°)
+                </Label>
+                <Slider Name="angle1" IsSnapToTickEnabled="True" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0" ValueChanged="RedrawCurrentFractal" Value="30" Minimum="1" Maximum="89"/>
+                <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5, 0, 10, 0" Content="{Binding Value, ElementName=angle1}"/>
+            </Grid>
+            <Grid Row="4" Name="secondSegmentAngle" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    Угол наклона второго отрезка (°)
+                </Label>
+                <Slider Name="angle2" IsSnapToTickEnabled="True" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0" ValueChanged="RedrawCurrentFractal" Maximum="89" Minimum="1" Value="60"></Slider>
+                <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5, 0, 10, 0" Content="{Binding Value, ElementName=angle2}"/>
+            </Grid>
+            <Grid Row="5" Name="lengthProportion" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    Отношение длин отрезков (%)
+                </Label>
+                <Slider Name="ratio" IsSnapToTickEnabled="True" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5, 0" ValueChanged="RedrawCurrentFractal" Maximum="90" Minimum="10" TickFrequency="1" Value="70"></Slider>
+                <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5, 0, 10, 0" Content="{Binding Value, ElementName=ratio}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
